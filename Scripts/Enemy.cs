@@ -1,36 +1,36 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Mover))]
+[RequireComponent(typeof(Walker))]
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private ObstacleChecker _wallChecker;
 
-    private float _moveDirection = 1;
-    private Mover _mover;
+    private float _walkingDirection = 1;
+    private Walker _walker;
 
     private static readonly float s_directionFlip = -1;
 
     private void Awake()
     {
-        _mover = GetComponent<Mover>();
+        _walker = GetComponent<Walker>();
         UpdateDirections();
     }
 
     private void Update()
     {
         if (_wallChecker.CheckObstacle())
-            FlipMoveDirection();
+            FlipWalkingDirection();
     }
 
-    private void FlipMoveDirection()
+    private void FlipWalkingDirection()
     {
-        _moveDirection *= s_directionFlip;
+        _walkingDirection *= s_directionFlip;
         UpdateDirections();
     }
 
     private void UpdateDirections()
     {
-        _wallChecker.SetDirection(new Vector2(_moveDirection, 0));
-        _mover.SetHorizontalDirection(_moveDirection);
+        _wallChecker.SetDirection(new Vector2(_walkingDirection, 0));
+        _walker.SetWalkingDirection(_walkingDirection);
     }
 }

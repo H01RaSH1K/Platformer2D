@@ -1,22 +1,22 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(Mover))]
+[RequireComponent(typeof(Walker))]
 [RequireComponent(typeof(Jumper))]
 public class Player : MonoBehaviour
 {
-    private Mover _mover;
+    private Walker _walker;
     private Jumper _jumper;
 
     private void Start()
     {
-        _mover = GetComponent<Mover>();
+        _walker = GetComponent<Walker>();
         _jumper = GetComponent<Jumper>();
     }
 
     private void Update()
     {
-        float horizontalMove = Input.GetAxisRaw(InputAxis.Horizontal);
-        _mover.SetHorizontalDirection(horizontalMove);
+        float walkingDirection = Input.GetAxisRaw(InputAxis.Horizontal);
+        _walker.SetWalkingDirection(walkingDirection);
 
         if (Input.GetButtonDown(InputButtons.Jump))
             _jumper.Jump();
