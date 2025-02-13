@@ -2,7 +2,7 @@
 
 [RequireComponent(typeof(Mover))]
 [RequireComponent(typeof(Jumper))]
-public class PlayerController : MonoBehaviour
+public class Player : MonoBehaviour
 {
     private Mover _mover;
     private Jumper _jumper;
@@ -16,25 +16,9 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         float horizontalMove = Input.GetAxisRaw(InputAxis.Horizontal);
-        _mover.MoveHorizontaly(horizontalMove);
+        _mover.SetHorizontalDirection(horizontalMove);
 
         if (Input.GetButtonDown(InputButtons.Jump))
-            _jumper.TryJump();
+            _jumper.Jump();
     }
-}
-
-public static class AnimatorParams
-{
-    public static readonly int IsRunning = Animator.StringToHash("IsRunning");
-}
-
-public static class InputAxis
-{
-    public static readonly string Horizontal = "Horizontal";
-    public static readonly string Verical = "Vertical";
-}
-
-public static class InputButtons
-{
-    public static readonly string Jump = "Jump";
 }

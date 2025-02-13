@@ -8,18 +8,29 @@ public class Jumper : MonoBehaviour
     [SerializeField] private float _jumpForce = 10f;
     [SerializeField] private ObstacleChecker _groundChecker;
 
-    private Rigidbody2D _rb;
+    private Rigidbody2D _rigidbody;
+    private Coroutine _jumpingCoroutine;
 
     private void Awake()
     {
-        _rb = GetComponent<Rigidbody2D>();
+        _rigidbody = GetComponent<Rigidbody2D>();
     }
 
-    public void TryJump()
+    public void Jump()
     {
+        if (_jumpingCoroutine == null)
+            _jumpingCoroutine = StartCoroutine(JumpOnFixedUpdate());
+    }
+
+    private IEnumerator JumpOnFixedUpdate()
+    {
+        yield return new WaitForFixedUpdate();
+
         bool isGrounded = _groundChecker.CheckObstacle();
 
-        if (isGrounded && Input.GetButtonDown(InputButtons.Jump))
-            _rb.velocity = new Vector2(_rb.velocity.x, _jumpForce);
+        if (isGrounded)
+            _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _jumpForce);
+
+        _jumpingCoroutine = null;
     }
 }

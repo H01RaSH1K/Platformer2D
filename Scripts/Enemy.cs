@@ -13,13 +13,11 @@ public class Enemy : MonoBehaviour
     private void Awake()
     {
         _mover = GetComponent<Mover>();
-        _wallChecker.SetDirection(new Vector2(_moveDirection, 0));
+        UpdateDirections();
     }
 
     private void Update()
     {
-        _mover.MoveHorizontaly(_moveDirection);
-
         if (_wallChecker.CheckObstacle())
             FlipMoveDirection();
     }
@@ -27,6 +25,12 @@ public class Enemy : MonoBehaviour
     private void FlipMoveDirection()
     {
         _moveDirection *= s_directionFlip;
+        UpdateDirections();
+    }
+
+    private void UpdateDirections()
+    {
         _wallChecker.SetDirection(new Vector2(_moveDirection, 0));
+        _mover.SetHorizontalDirection(_moveDirection);
     }
 }
