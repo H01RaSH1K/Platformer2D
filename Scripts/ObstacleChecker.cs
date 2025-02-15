@@ -10,8 +10,7 @@ public class ObstacleChecker : MonoBehaviour
 
     public bool CheckObstacle()
     {
-        var ray = Physics2D.Raycast(transform.position, _checkDirection, _checkDistance, _layerMask);
-        return ray;
+        return Physics2D.Raycast(transform.position, _checkDirection, _checkDistance, _layerMask);
     }
 
     public void SetDirection(Vector2 newDirection)
