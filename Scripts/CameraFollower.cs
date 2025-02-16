@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CameraFollow : MonoBehaviour
+public class CameraFollower : MonoBehaviour
 {
     [SerializeField] private Transform _target;
     [SerializeField] private Vector3 _movementThreshold = new Vector3(1f, 1f);
