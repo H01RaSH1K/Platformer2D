@@ -4,21 +4,26 @@
 [RequireComponent(typeof(Jumper))]
 public class PlayerMover : MonoBehaviour
 {
+    [SerializeField] private InputService _inputService;
+
     private Walker _walker;
     private Jumper _jumper;
 
-    private void Start()
+    private void Awake()
     {
         _walker = GetComponent<Walker>();
         _jumper = GetComponent<Jumper>();
+
+        _inputService.HorizontalAxisChanged += UpdateWalkingDirection;
+        _inputService.JumpButtonPressed += Jump;
     }
 
-    private void Update()
+    private void UpdateWalkingDirection(float direciton)
     {
-        float walkingDirection = Input.GetAxisRaw(InputAxis.Horizontal);
-        _walker.SetWalkingDirection(walkingDirection);
+        _walker.SetWalkingDirection(direciton);
+    }
 
-        if (Input.GetButtonDown(InputButtons.Jump))
-            _jumper.Jump();
+    private void Jump() { 
+        _jumper.Jump(); 
     }
 }
