@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -13,6 +11,7 @@ public class Walker : MonoBehaviour
     private Rigidbody2D _rigidbody;
     private Flipper _flipper;
 
+    private bool _isWalkingBackwards;
     private float _walkingDirection;
     private Vector3 _velocity;
 
@@ -27,11 +26,34 @@ public class Walker : MonoBehaviour
         Vector2 movement = new Vector2(_walkingDirection * _speed, _rigidbody.velocity.y);
         _rigidbody.velocity = Vector3.SmoothDamp(_rigidbody.velocity, movement, ref _velocity, _movementSmoothing);
         _animator.SetBool(AnimatorParams.IsRunning, Mathf.Approximately(_walkingDirection, 0) == false);
-        _flipper.UpdateFacingDirection(_walkingDirection);
+        _flipper.UpdateFacingDirection(GetFacingDirection());
     }
 
-    public void SetWalkingDirection(float direction)
+    public void Walk(float direction)
     {
-        _walkingDirection = direction;
+        _walkingDirection = NormalizeDirection(direction);
+        _isWalkingBackwards = false;
+    }
+
+    public void WalkBackwards(float direction)
+    {
+        _walkingDirection = NormalizeDirection(direction);
+        _isWalkingBackwards = true;
+    }
+
+    private float GetFacingDirection()
+    {
+        if (_isWalkingBackwards)
+            return _walkingDirection * -1; 
+
+        return _walkingDirection;
+    }
+
+    private float NormalizeDirection(float direction)
+    {
+        if (direction == 0f)
+            return 0f;
+
+        return direction / Mathf.Abs(direction);
     }
 }

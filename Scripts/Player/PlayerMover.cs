@@ -20,7 +20,7 @@ public class PlayerMover : MonoBehaviour
 
     private void UpdateWalkingDirection(float direciton)
     {
-        _walker.SetWalkingDirection(direciton);
+        _walker.Walk(direciton);
     }
 
     private void Jump() { 
