@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Gem : Item
 {
-    protected override void AcceptCollector(ItemCollector collector)
+    protected override void AcceptCollector(IItemCollector collector)
     {
         collector.CollectGem();
     }

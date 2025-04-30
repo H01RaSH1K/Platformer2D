@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Burst.CompilerServices;
 using UnityEngine;
 
 public class ObstacleChecker : MonoBehaviour
@@ -23,10 +20,5 @@ public class ObstacleChecker : MonoBehaviour
         _lastFrameCount = Time.frameCount;
         _lastHit = hit;
         return hit;
-    }
-
-    public void SetDirection(Vector2 newDirection)
-    {
-        _checkDirection = newDirection;
     }
 }

@@ -1,48 +1,57 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class StateRetracting : EnemyState
 {
     private float _retractingTime = 5f;
-
+    private MonoBehaviour _coroutineRunner;
+    private Transform _transform;
+    private Walker _walker;
+    private PlayerFinder _playerDetectionZone;
     private WaitForSeconds _waitForStop;
     private Coroutine _stoppingCoroutine;
 
-    public StateRetracting(Enemy enemy) : base(enemy)
+    public StateRetracting(
+        IStateChanger stateChanger, MonoBehaviour coroutineRunner, Transform transform, Walker walker,
+        PlayerFinder playerDetectionZone
+    ) : base(stateChanger)
     {
         _waitForStop = new WaitForSeconds(_retractingTime);
+        _coroutineRunner = coroutineRunner;
+        _transform = transform;
+        _walker = walker;
+        _playerDetectionZone = playerDetectionZone;
     }
 
     public override void Enter()
     {
-        _stoppingCoroutine = _enemy.StartCoroutine(StoppingCoroutine());
+        _stoppingCoroutine = _coroutineRunner.StartCoroutine(StoppingCoroutine());
     }
 
     public override void BehaveOnUpdate()
     {
-        if (_enemy.PlayerDetectionZone.CurrentTarget == null)
+        if (_playerDetectionZone.CurrentTarget == null)
         {
-            _enemy.SetState<StatePatrolling>();
+            StateChanger.ChangeState(EnemyStateType.Patrolling);
             return;
         }
 
-        float retractingDirection = _enemy.transform.position.x - _enemy.PlayerDetectionZone.CurrentTarget.transform.position.x;
+        float retractingDirection = _transform.position.x - _playerDetectionZone.CurrentTarget.transform.position.x;
 
-        _enemy.Walker.WalkBackwards(retractingDirection);
+        _walker.WalkBackwards(retractingDirection);
     }
 
     public override void Exit()
     {
-        _enemy.StopCoroutine(_stoppingCoroutine);
+        _coroutineRunner.StopCoroutine(_stoppingCoroutine);
         _stoppingCoroutine = null;
-        _enemy.Walker.Walk(0);
+        _walker.Walk(0);
     }
 
     private IEnumerator StoppingCoroutine()
     {
         yield return _waitForStop;
 
-        _enemy.SetState<StateAggressive>();
+        StateChanger.ChangeState(EnemyStateType.Aggressive);
     }
 }

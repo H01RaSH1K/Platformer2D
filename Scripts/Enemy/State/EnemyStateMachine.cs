@@ -1,28 +1,32 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
-public class EnemyStateMachine
+public class EnemyStateMachine : IStateChanger
 {
-    private Dictionary<Type, EnemyState> _states;
+    private Dictionary<EnemyStateType, EnemyState> _states;
     
     public EnemyState CurrentState { get; private set; }
 
-    public EnemyStateMachine(Enemy enemy)
+    public EnemyStateMachine(
+        MonoBehaviour coroutineRunner, Transform transform, Walker walker, Dasher dasher, 
+        ObstacleChecker wallChecker, PlayerFinder jawsReach, PlayerFinder playerDetectionZone
+    )
     {
-        _states = new Dictionary<Type, EnemyState>();
+        _states = new Dictionary<EnemyStateType, EnemyState>();
 
-        _states[typeof(StateAggressive)] = new StateAggressive(enemy);
-        _states[typeof(StatePatrolling)] = new StatePatrolling(enemy);
-        _states[typeof(StateRetracting)] = new StateRetracting(enemy);
-        _states[typeof(StateAttack)] = new StateAttack(enemy);
+        _states[EnemyStateType.Patrolling] = new StatePatrolling(this, walker, playerDetectionZone, wallChecker);
+        _states[EnemyStateType.Aggressive] = new StateAggressive(this, transform, walker, jawsReach, playerDetectionZone);
+        _states[EnemyStateType.Attack] = new StateAttack(this, coroutineRunner, transform, walker, dasher, wallChecker, jawsReach);
+        _states[EnemyStateType.Retracting] = new StateRetracting(this, coroutineRunner, transform, walker, playerDetectionZone);
 
-        EnterState<StatePatrolling>();
+        EnterState(EnemyStateType.Patrolling);
     }
 
-    public void SetState<T>() where T : EnemyState
+    public void ChangeState(EnemyStateType enemyStateType)
     {
         ExitCurrentState();
-        EnterState<T>();
+        EnterState(enemyStateType);
     }
 
     private void ExitCurrentState()
@@ -31,11 +35,11 @@ public class EnemyStateMachine
         CurrentState = null;
     }
 
-    private void EnterState<T>() where T : EnemyState
+    private void EnterState(EnemyStateType enemyStateType)
     {
         EnemyState state;
 
-        if (_states.TryGetValue(typeof(T), out state) == false)
+        if (_states.TryGetValue(enemyStateType, out state) == false)
             return;
 
         CurrentState = state;

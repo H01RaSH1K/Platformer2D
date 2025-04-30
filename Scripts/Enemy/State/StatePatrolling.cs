@@ -1,39 +1,44 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class StatePatrolling : EnemyState
 {
     private static readonly float s_directionFlip = -1;
+    private Walker _walker;
+    private PlayerFinder _playerDetectionZone;
+    private ObstacleChecker _wallChecker;
     private float _walkingDirection = 1;
 
-    public StatePatrolling(Enemy enemy) : base(enemy) {}
+
+    public StatePatrolling(IStateChanger stateChanger, Walker walker, PlayerFinder playerDetectionZone, ObstacleChecker wallChecker) : base(stateChanger)
+    {
+        _walker = walker;
+        _playerDetectionZone = playerDetectionZone;
+        _wallChecker = wallChecker;
+    }
 
     public override void Enter()
     {
-        _enemy.Walker.Walk(_walkingDirection);
+        _walker.Walk(_walkingDirection);
     }
 
     public override void BehaveOnUpdate()
     {
-        if (_enemy.PlayerDetectionZone.CurrentTarget != null)
+        if (_playerDetectionZone.CurrentTarget != null)
         {
-            _enemy.SetState<StateAggressive>();
+            StateChanger.ChangeState(EnemyStateType.Aggressive);
             return;
         }
 
-        if (_enemy.WallChecker.CheckObstacle())
+        if (_wallChecker.CheckObstacle())
             FlipWalkingDirection();
     }
 
     public override void Exit()
     {
-        _enemy.Walker.Walk(0);
+        _walker.Walk(0);
     }
 
     private void FlipWalkingDirection()
     {
         _walkingDirection *= s_directionFlip;
-        _enemy.Walker.Walk(_walkingDirection);
+        _walker.Walk(_walkingDirection);
     }
 }

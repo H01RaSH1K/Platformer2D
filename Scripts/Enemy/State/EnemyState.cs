@@ -1,14 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public abstract class EnemyState
 {
-    protected Enemy _enemy;
+    protected IStateChanger StateChanger;
 
-    public EnemyState(Enemy enemy)
+    public EnemyState(IStateChanger stateChanger)
     {
-        _enemy = enemy;
+        StateChanger = stateChanger;
     }
 
     public abstract void Enter();

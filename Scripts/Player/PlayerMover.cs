@@ -23,7 +23,8 @@ public class PlayerMover : MonoBehaviour
         _walker.Walk(direciton);
     }
 
-    private void Jump() { 
+    private void Jump() 
+    { 
         _jumper.Jump(); 
     }
 }

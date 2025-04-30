@@ -13,7 +13,6 @@ public class GemsCounterView : MonoBehaviour
 
     private void OnDisable()
     {
-
         _gemsCounter.GemsAmountChanged -= OnGemsAmountChanged;
     }
 

@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Walker))]
@@ -22,16 +21,11 @@ public class Enemy : Creature
         Walker = GetComponent<Walker>();
         Dasher = GetComponent<Dasher>();
 
-        _stateMachine = new EnemyStateMachine(this);
+        _stateMachine = new EnemyStateMachine(this, transform, Walker, Dasher, WallChecker, JawsReach, PlayerDetectionZone);
     }
 
     private void Update()
     {
         _stateMachine.CurrentState.BehaveOnUpdate();
-    }
-
-    public void SetState<T>() where T : EnemyState
-    {
-        _stateMachine.SetState<T>();
     }
 }

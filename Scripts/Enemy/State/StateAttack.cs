@@ -1,27 +1,40 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class StateAttack : EnemyState
 {
     private float _attackingTime = 1f;
     private int _damage = 10;
-
+    private MonoBehaviour _coroutineRunner;
+    private Transform _transform;
+    private Walker _walker;
+    private Dasher _dasher;
+    private ObstacleChecker _wallChecker;
+    private PlayerFinder _jawsReach;
     private WaitForSeconds _waitForStop;
     private Coroutine _stoppingCoroutine;
 
-    public StateAttack(Enemy enemy) : base(enemy)
+    public StateAttack(
+        IStateChanger stateChanger, MonoBehaviour coroutineRunner, Transform transform, Walker walker,
+        Dasher dasher, ObstacleChecker wallChecker, PlayerFinder jawsReach
+    ) : base(stateChanger)
     {
         _waitForStop = new WaitForSeconds(_attackingTime);
+        _coroutineRunner = coroutineRunner;
+        _transform = transform;
+        _walker = walker;
+        _dasher = dasher;
+        _wallChecker = wallChecker;
+        _jawsReach = jawsReach;
     }
 
     public override void Enter()
     {
-        _stoppingCoroutine = _enemy.StartCoroutine(StoppingCoroutine());
+        _stoppingCoroutine = _coroutineRunner.StartCoroutine(StoppingCoroutine());
 
-        Vector2 playerDirection = _enemy.JawsReach.CurrentTarget.transform.position - _enemy.transform.position;
-        _enemy.Walker.enabled = false;
-        _enemy.Dasher.Dash(playerDirection);
+        Vector2 playerDirection = _jawsReach.CurrentTarget.transform.position - _transform.position;
+        _walker.enabled = false;
+        _dasher.Dash(playerDirection);
     }
 
     public override void BehaveOnUpdate()
@@ -29,14 +42,14 @@ public class StateAttack : EnemyState
         if (CanHit(out Player player))
         {
             player.TakeDamage(_damage);
-            _enemy.SetState<StateRetracting>();
+            StateChanger.ChangeState(EnemyStateType.Retracting);
         }
     }
 
     public override void Exit()
     {
-        _enemy.Walker.enabled = true;
-        _enemy.StopCoroutine(_stoppingCoroutine);
+        _walker.enabled = true;
+        _coroutineRunner.StopCoroutine(_stoppingCoroutine);
         _stoppingCoroutine = null;
     }
 
@@ -44,15 +57,15 @@ public class StateAttack : EnemyState
     {
         yield return _waitForStop;
 
-        _enemy.SetState<StateRetracting>();
+        StateChanger.ChangeState(EnemyStateType.Retracting);
     }
 
     public bool CanHit(out Player player)
     {
         player = null;
-        RaycastHit2D hit = _enemy.WallChecker.CheckObstacle();
+        RaycastHit2D hit = _wallChecker.CheckObstacle();
 
-        if (!hit)
+        if (hit == false)
             return false;
 
         return hit.collider.gameObject.TryGetComponent(out player);

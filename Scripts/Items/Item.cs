@@ -11,5 +11,5 @@ public abstract class Item : MonoBehaviour
         AcceptCollector(collector);
     }
 
-    protected abstract void AcceptCollector(ItemCollector collector);
+    protected abstract void AcceptCollector(IItemCollector collector);
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
-public class ItemCollector : MonoBehaviour
+public class ItemCollector : MonoBehaviour, IItemCollector
 {
     [SerializeField] private Creature _creature;
     [SerializeField] private GemsCounter _gemsCounter;

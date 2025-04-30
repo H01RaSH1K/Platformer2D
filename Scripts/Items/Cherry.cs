@@ -8,7 +8,7 @@ public class Cherry : Item
     
     public int HealAmount => _healAmount;
 
-    protected override void AcceptCollector(ItemCollector collector)
+    protected override void AcceptCollector(IItemCollector collector)
     {
         collector.CollectCherry(this);
     }

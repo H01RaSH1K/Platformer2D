@@ -1,19 +1,17 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Creature : MonoBehaviour
 {
-    [SerializeField] private int _hp;
+    [SerializeField] private int _health;
 
     public void TakeDamage(int damage)
     {
-        _hp = Math.Max(_hp - damage, 0);
+        _health = Math.Max(_health - damage, 0);
     }
 
     public void Heal(int healthAmount)
     {
-        _hp += healthAmount;
+        _health += healthAmount;
     }
 }

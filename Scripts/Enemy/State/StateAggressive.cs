@@ -1,14 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class StateAggressive : EnemyState
 {
-    private float _walkingThreshold = 1.5f;
+    private float _walkingThreshold = 3f;
+    private Transform _transform;
+    private Walker _walker;
+    private PlayerFinder _playerDetectionZone;
+    private PlayerFinder _jawsReach;
 
-    public StateAggressive(Enemy enemy) : base(enemy) { }
+    public StateAggressive(
+        IStateChanger stateChanger, Transform transform, Walker walker,
+        PlayerFinder jawsReach, PlayerFinder playerDetectionZone
+    ) : base(stateChanger)
+    {
+        _transform = transform;
+        _walker = walker;
+        _jawsReach = jawsReach;
+        _playerDetectionZone = playerDetectionZone;
+    }
 
     public override void Enter()
     {
@@ -18,15 +27,15 @@ public class StateAggressive : EnemyState
     {
         if (CanAttack())
         {
-            _enemy.SetState<StateAttack>();
+            StateChanger.ChangeState(EnemyStateType.Attack);
             return;
         }
 
-        Player player = _enemy.PlayerDetectionZone.CurrentTarget;
+        Player player = _playerDetectionZone.CurrentTarget;
 
         if (player == null)
         {
-            _enemy.SetState<StatePatrolling>();
+            StateChanger.ChangeState(EnemyStateType.Patrolling);
             return;
         }
 
@@ -35,21 +44,21 @@ public class StateAggressive : EnemyState
 
     public override void Exit()
     {
-        _enemy.Walker.Walk(0);
+        _walker.Walk(0);
     }
 
     private bool CanAttack()
     {
-        return _enemy.JawsReach.CurrentTarget != null;
+        return _jawsReach.CurrentTarget != null;
     }
 
     private void ChasePlayer(Player player)
     {
-        float playerDirection = player.transform.position.x - _enemy.transform.position.x;
+        float playerDirection = player.transform.position.x - _transform.position.x;
 
         if (Mathf.Abs(playerDirection) > _walkingThreshold)
-            _enemy.Walker.Walk(playerDirection);
+            _walker.Walk(playerDirection);
         else
-            _enemy.Walker.Walk(0);
+            _walker.Walk(0);
     }
 }
