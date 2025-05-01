@@ -13,9 +13,18 @@ public class PlayerMover : MonoBehaviour
     {
         _walker = GetComponent<Walker>();
         _jumper = GetComponent<Jumper>();
+    }
 
+    private void OnEnable()
+    {
         _inputService.HorizontalAxisChanged += UpdateWalkingDirection;
         _inputService.JumpButtonPressed += Jump;
+    }
+
+    private void OnDisable()
+    {
+        _inputService.HorizontalAxisChanged -= UpdateWalkingDirection;
+        _inputService.JumpButtonPressed -= Jump;
     }
 
     private void UpdateWalkingDirection(float direciton)

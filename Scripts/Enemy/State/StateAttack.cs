@@ -9,14 +9,14 @@ public class StateAttack : EnemyState
     private Transform _transform;
     private Walker _walker;
     private Dasher _dasher;
-    private ObstacleChecker _wallChecker;
+    private ObstacleScanner _frontObstacleScanner;
     private PlayerFinder _jawsReach;
     private WaitForSeconds _waitForStop;
     private Coroutine _stoppingCoroutine;
 
     public StateAttack(
         IStateChanger stateChanger, MonoBehaviour coroutineRunner, Transform transform, Walker walker,
-        Dasher dasher, ObstacleChecker wallChecker, PlayerFinder jawsReach
+        Dasher dasher, ObstacleScanner frontObstacleScanner, PlayerFinder jawsReach
     ) : base(stateChanger)
     {
         _waitForStop = new WaitForSeconds(_attackingTime);
@@ -24,7 +24,7 @@ public class StateAttack : EnemyState
         _transform = transform;
         _walker = walker;
         _dasher = dasher;
-        _wallChecker = wallChecker;
+        _frontObstacleScanner = frontObstacleScanner;
         _jawsReach = jawsReach;
     }
 
@@ -63,7 +63,7 @@ public class StateAttack : EnemyState
     public bool CanHit(out Player player)
     {
         player = null;
-        RaycastHit2D hit = _wallChecker.CheckObstacle();
+        RaycastHit2D hit = _frontObstacleScanner.GetObstacle();
 
         if (hit == false)
             return false;

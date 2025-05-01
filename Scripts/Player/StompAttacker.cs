@@ -3,7 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(Jumper))]
 public class StompAttacker : MonoBehaviour
 {
-    [SerializeField] private ObstacleChecker _groundChecker;
+    [SerializeField] private ObstacleScanner _groundObstacleScanner;
     [SerializeField] private int _damage;
     [SerializeField] private float _attackDelay;
     private Jumper _jumper;
@@ -19,7 +19,7 @@ public class StompAttacker : MonoBehaviour
         if (Time.time - _lastAttackTime < _attackDelay)
             return;
 
-        RaycastHit2D hit = _groundChecker.CheckObstacle();
+        RaycastHit2D hit = _groundObstacleScanner.GetObstacle();
 
         if (hit == false)
             return;

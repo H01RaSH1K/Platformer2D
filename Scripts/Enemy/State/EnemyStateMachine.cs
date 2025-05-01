@@ -10,14 +10,14 @@ public class EnemyStateMachine : IStateChanger
 
     public EnemyStateMachine(
         MonoBehaviour coroutineRunner, Transform transform, Walker walker, Dasher dasher, 
-        ObstacleChecker wallChecker, PlayerFinder jawsReach, PlayerFinder playerDetectionZone
+        ObstacleScanner frontObstacleScanner, PlayerFinder jawsReach, PlayerFinder playerDetectionZone
     )
     {
         _states = new Dictionary<EnemyStateType, EnemyState>();
 
-        _states[EnemyStateType.Patrolling] = new StatePatrolling(this, walker, playerDetectionZone, wallChecker);
+        _states[EnemyStateType.Patrolling] = new StatePatrolling(this, walker, playerDetectionZone, frontObstacleScanner);
         _states[EnemyStateType.Aggressive] = new StateAggressive(this, transform, walker, jawsReach, playerDetectionZone);
-        _states[EnemyStateType.Attack] = new StateAttack(this, coroutineRunner, transform, walker, dasher, wallChecker, jawsReach);
+        _states[EnemyStateType.Attack] = new StateAttack(this, coroutineRunner, transform, walker, dasher, frontObstacleScanner, jawsReach);
         _states[EnemyStateType.Retracting] = new StateRetracting(this, coroutineRunner, transform, walker, playerDetectionZone);
 
         EnterState(EnemyStateType.Patrolling);

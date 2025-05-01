@@ -6,7 +6,7 @@ using UnityEngine;
 public class Jumper : MonoBehaviour
 {
     [SerializeField] private float _jumpForce = 10f;
-    [SerializeField] private ObstacleChecker _groundChecker;
+    [SerializeField] private ObstacleScanner _groundObstacleScanner;
 
     private Rigidbody2D _rigidbody;
     private Coroutine _jumpingCoroutine;
@@ -26,7 +26,7 @@ public class Jumper : MonoBehaviour
     {
         yield return new WaitForFixedUpdate();
 
-        bool isGrounded = _groundChecker.CheckObstacle();
+        bool isGrounded = _groundObstacleScanner.GetObstacle();
 
         if (isGrounded)
             _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _jumpForce);

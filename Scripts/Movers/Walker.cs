@@ -6,7 +6,7 @@ public class Walker : MonoBehaviour
 {
     [SerializeField] private float _speed = 5f;
     [SerializeField] private float _movementSmoothing = 0.05f;
-    [SerializeField] private Animator _animator;
+    [SerializeField] private CreatureAnimator _animator;
 
     private Rigidbody2D _rigidbody;
     private Flipper _flipper;
@@ -25,8 +25,12 @@ public class Walker : MonoBehaviour
     {
         Vector2 movement = new Vector2(_walkingDirection * _speed, _rigidbody.velocity.y);
         _rigidbody.velocity = Vector3.SmoothDamp(_rigidbody.velocity, movement, ref _velocity, _movementSmoothing);
-        _animator.SetBool(AnimatorParams.IsRunning, Mathf.Approximately(_walkingDirection, 0) == false);
         _flipper.UpdateFacingDirection(GetFacingDirection());
+
+        if (Mathf.Approximately(_walkingDirection, 0))
+            _animator.StopWalk();
+        else
+            _animator.StartWalk();
     }
 
     public void Walk(float direction)

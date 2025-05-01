@@ -3,15 +3,15 @@ public class StatePatrolling : EnemyState
     private static readonly float s_directionFlip = -1;
     private Walker _walker;
     private PlayerFinder _playerDetectionZone;
-    private ObstacleChecker _wallChecker;
+    private ObstacleScanner _frontObstacleScanner;
     private float _walkingDirection = 1;
 
 
-    public StatePatrolling(IStateChanger stateChanger, Walker walker, PlayerFinder playerDetectionZone, ObstacleChecker wallChecker) : base(stateChanger)
+    public StatePatrolling(IStateChanger stateChanger, Walker walker, PlayerFinder playerDetectionZone, ObstacleScanner frontObstacleScanner) : base(stateChanger)
     {
         _walker = walker;
         _playerDetectionZone = playerDetectionZone;
-        _wallChecker = wallChecker;
+        _frontObstacleScanner = frontObstacleScanner;
     }
 
     public override void Enter()
@@ -27,7 +27,7 @@ public class StatePatrolling : EnemyState
             return;
         }
 
-        if (_wallChecker.CheckObstacle())
+        if (_frontObstacleScanner.GetObstacle())
             FlipWalkingDirection();
     }
 

@@ -10,11 +10,11 @@ public class InputService : MonoBehaviour
 
     private void Update()
     {
-        UpdateHorizontalAxis();
-        CheckJump();
+        HandlerHorizontalAxisInput();
+        HandleJumpInput();
     }
 
-    private void UpdateHorizontalAxis()
+    private void HandlerHorizontalAxisInput()
     {
         float horizontalAxis = Input.GetAxisRaw(InputAxis.Horizontal);
 
@@ -25,7 +25,7 @@ public class InputService : MonoBehaviour
         }
     }
 
-    private void CheckJump()
+    private void HandleJumpInput()
     {
         if (Input.GetButtonDown(InputButtons.Jump))
             JumpButtonPressed?.Invoke();

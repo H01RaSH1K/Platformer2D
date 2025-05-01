@@ -4,28 +4,23 @@ using UnityEngine;
 [RequireComponent(typeof(Dasher))]
 public class Enemy : Creature
 {
-    [SerializeField] private ObstacleChecker _wallChecker;
+    [SerializeField] private ObstacleScanner _frontObstacleScanner;
     [SerializeField] PlayerFinder _playerDetectionZone;
     [SerializeField] PlayerFinder _jawsReach;
-
-    private EnemyStateMachine _stateMachine;
-
-    public ObstacleChecker WallChecker => _wallChecker;
-    public PlayerFinder PlayerDetectionZone => _playerDetectionZone;
-    public PlayerFinder JawsReach => _jawsReach;
-    public Walker Walker { get; private set; }
-    public Dasher Dasher { get; private set; }
+    private Walker _walker;
+    private Dasher _dasher;
+    private EnemyStateMachine _enemyStateMachine;
 
     private void Awake()
     {
-        Walker = GetComponent<Walker>();
-        Dasher = GetComponent<Dasher>();
+        _walker = GetComponent<Walker>();
+        _dasher = GetComponent<Dasher>();
 
-        _stateMachine = new EnemyStateMachine(this, transform, Walker, Dasher, WallChecker, JawsReach, PlayerDetectionZone);
+        _enemyStateMachine = new EnemyStateMachine(this, transform, _walker, _dasher, _frontObstacleScanner, _jawsReach, _playerDetectionZone);
     }
 
     private void Update()
     {
-        _stateMachine.CurrentState.BehaveOnUpdate();
+        _enemyStateMachine.CurrentState.BehaveOnUpdate();
     }
 }
