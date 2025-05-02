@@ -1,17 +1,12 @@
-using System;
 using UnityEngine;
 
+[RequireComponent(typeof(Health))]
 public class Creature : MonoBehaviour
 {
-    [SerializeField] private int _health;
+    public Health Health { get; private set; }
 
-    public void TakeDamage(int damage)
+    private void Awake()
     {
-        _health = Math.Max(_health - damage, 0);
-    }
-
-    public void Heal(int healthAmount)
-    {
-        _health += healthAmount;
+        Health = GetComponent<Health>();
     }
 }

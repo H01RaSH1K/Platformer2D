@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class ItemCollector : MonoBehaviour, IItemCollector
 {
-    [SerializeField] private Creature _creature;
+    [SerializeField] private Health _health;
     [SerializeField] private GemsCounter _gemsCounter;
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -21,6 +21,6 @@ public class ItemCollector : MonoBehaviour, IItemCollector
 
     public void CollectCherry(Cherry cherry)
     {
-        _creature.Heal(cherry.HealAmount);
+        _health.Heal(cherry.HealAmount);
     }
 }

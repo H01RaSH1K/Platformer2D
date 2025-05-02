@@ -41,7 +41,7 @@ public class StateAttack : EnemyState
     {
         if (CanHit(out Player player))
         {
-            player.TakeDamage(_damage);
+            player.Health.TakeDamage(_damage);
             StateChanger.ChangeState(EnemyStateType.Retracting);
         }
     }

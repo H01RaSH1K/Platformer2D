@@ -20,13 +20,16 @@ public class EnemyStateMachine : IStateChanger
         _states[EnemyStateType.Attack] = new StateAttack(this, coroutineRunner, transform, walker, dasher, frontObstacleScanner, jawsReach);
         _states[EnemyStateType.Retracting] = new StateRetracting(this, coroutineRunner, transform, walker, playerDetectionZone);
 
-        EnterState(EnemyStateType.Patrolling);
+        EnterState(_states[EnemyStateType.Patrolling]);
     }
 
     public void ChangeState(EnemyStateType enemyStateType)
     {
+        if (_states.TryGetValue(enemyStateType, out EnemyState state) == false)
+            return;
+
         ExitCurrentState();
-        EnterState(enemyStateType);
+        EnterState(state);
     }
 
     private void ExitCurrentState()
@@ -35,13 +38,8 @@ public class EnemyStateMachine : IStateChanger
         CurrentState = null;
     }
 
-    private void EnterState(EnemyStateType enemyStateType)
+    private void EnterState(EnemyState state)
     {
-        EnemyState state;
-
-        if (_states.TryGetValue(enemyStateType, out state) == false)
-            return;
-
         CurrentState = state;
         CurrentState.Enter();
     }

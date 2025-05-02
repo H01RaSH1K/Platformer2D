@@ -1,12 +1,11 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Jumper : MonoBehaviour
 {
     [SerializeField] private float _jumpForce = 10f;
-    [SerializeField] private ObstacleScanner _groundObstacleScanner;
+    [SerializeField] private ObstacleScanner _bottomObstacleScanner;
 
     private Rigidbody2D _rigidbody;
     private Coroutine _jumpingCoroutine;
@@ -26,7 +25,7 @@ public class Jumper : MonoBehaviour
     {
         yield return new WaitForFixedUpdate();
 
-        bool isGrounded = _groundObstacleScanner.GetObstacle();
+        bool isGrounded = _bottomObstacleScanner.GetObstacle();
 
         if (isGrounded)
             _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _jumpForce);
