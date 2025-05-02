@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class GemsCounter : MonoBehaviour
 {
-    public event Action GemsAmountChanged;
+    public event Action CountChanged;
 
-    public int Gems { get; private set; }
+    public int Count { get; private set; }
 
     public void AddGem()
     {
-        Gems++;
-        GemsAmountChanged?.Invoke();
+        Count++;
+        CountChanged?.Invoke();
     }
 }

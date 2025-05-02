@@ -5,7 +5,7 @@ public abstract class Item : MonoBehaviour
 {
     public event Action Collected;
 
-    public void OnCollected(ItemCollector collector)
+    public void BeCollected(ItemCollector collector)
     {
         Collected?.Invoke();
         AcceptCollector(collector);

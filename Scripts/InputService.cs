@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class InputService : MonoBehaviour
 {
+    private float _lastHorizontalAxis;
+
     public event Action<float> HorizontalAxisChanged;
     public event Action JumpButtonPressed;
-
-    private float _lastHorizontalAxis;
 
     private void Update()
     {

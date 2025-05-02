@@ -8,17 +8,17 @@ public class GemsCounterView : MonoBehaviour
 
     private void OnEnable()
     {
-        _gemsCounter.GemsAmountChanged += OnGemsAmountChanged;
+        _gemsCounter.CountChanged += OnGemsAmountChanged;
     }
 
     private void OnDisable()
     {
-        _gemsCounter.GemsAmountChanged -= OnGemsAmountChanged;
+        _gemsCounter.CountChanged -= OnGemsAmountChanged;
     }
 
     private void OnGemsAmountChanged()
     {
-        _gemsText.text = _gemsCounter.Gems.ToString();
+        _gemsText.text = _gemsCounter.Count.ToString();
     }
 }
 

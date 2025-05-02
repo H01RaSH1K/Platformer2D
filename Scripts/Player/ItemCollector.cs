@@ -11,7 +11,7 @@ public class ItemCollector : MonoBehaviour, IItemCollector
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.TryGetComponent(out Item item))
-            item.OnCollected(this);
+            item.BeCollected(this);
     }
 
     public void CollectGem()

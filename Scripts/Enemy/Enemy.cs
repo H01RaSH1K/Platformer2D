@@ -5,8 +5,8 @@ using UnityEngine;
 public class Enemy : Creature
 {
     [SerializeField] private ObstacleScanner _frontObstacleScanner;
-    [SerializeField] PlayerFinder _playerDetectionZone;
-    [SerializeField] PlayerFinder _jawsReach;
+    [SerializeField] private PlayerFinder _playerDetectionZone;
+    [SerializeField] private PlayerFinder _jawsReach;
     private Walker _walker;
     private Dasher _dasher;
     private EnemyStateMachine _enemyStateMachine;
