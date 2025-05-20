@@ -21,6 +21,6 @@ public class ItemCollector : MonoBehaviour, IItemCollector
 
     public void CollectCherry(Cherry cherry)
     {
-        _health.Heal(cherry.HealAmount);
+        _health.TakeHeal(cherry.HealAmount);
     }
 }

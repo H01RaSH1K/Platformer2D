@@ -1,15 +1,14 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(Flipper))]
 public class Walker : MonoBehaviour
 {
     [SerializeField] private float _speed = 5f;
     [SerializeField] private float _movementSmoothing = 0.05f;
     [SerializeField] private CreatureAnimator _animator;
+    [SerializeField] private Flipper _flipper;
 
     private Rigidbody2D _rigidbody;
-    private Flipper _flipper;
 
     private bool _isWalkingBackwards;
     private float _walkingDirection;
@@ -18,7 +17,6 @@ public class Walker : MonoBehaviour
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
-        _flipper = GetComponent<Flipper>();
     }
 
     private void FixedUpdate()

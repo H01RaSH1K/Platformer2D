@@ -11,8 +11,10 @@ public class Enemy : Creature
     private Dasher _dasher;
     private EnemyStateMachine _enemyStateMachine;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         _walker = GetComponent<Walker>();
         _dasher = GetComponent<Dasher>();
 
@@ -21,6 +23,6 @@ public class Enemy : Creature
 
     private void Update()
     {
-        _enemyStateMachine.CurrentState.BehaveOnUpdate();
+        _enemyStateMachine.CurrentState.Update();
     }
 }

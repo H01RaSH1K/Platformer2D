@@ -19,7 +19,7 @@ public class StatePatrolling : EnemyState
         _walker.Walk(_walkingDirection);
     }
 
-    public override void BehaveOnUpdate()
+    public override void Update()
     {
         if (_playerDetectionZone.CurrentTarget != null)
         {

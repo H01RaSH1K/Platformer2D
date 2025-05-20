@@ -23,7 +23,7 @@ public class StateAggressive : EnemyState
     {
     }
 
-    public override void BehaveOnUpdate()
+    public override void Update()
     {
         if (CanAttack())
         {

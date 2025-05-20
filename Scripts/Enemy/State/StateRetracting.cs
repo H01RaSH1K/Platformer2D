@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class StateRetracting : EnemyState
 {
-    private float _retractingTime = 5f;
+    private float _retractingTime = 2f;
     private MonoBehaviour _coroutineRunner;
     private Transform _transform;
     private Walker _walker;
@@ -28,7 +28,7 @@ public class StateRetracting : EnemyState
         _stoppingCoroutine = _coroutineRunner.StartCoroutine(StoppingCoroutine());
     }
 
-    public override void BehaveOnUpdate()
+    public override void Update()
     {
         if (_playerDetectionZone.CurrentTarget == null)
         {

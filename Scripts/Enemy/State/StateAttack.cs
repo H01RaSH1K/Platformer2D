@@ -37,7 +37,7 @@ public class StateAttack : EnemyState
         _dasher.Dash(playerDirection);
     }
 
-    public override void BehaveOnUpdate()
+    public override void Update()
     {
         if (CanHit(out Player player))
         {
@@ -57,7 +57,7 @@ public class StateAttack : EnemyState
     {
         yield return _waitForStop;
 
-        StateChanger.ChangeState(EnemyStateType.Retracting);
+        StateChanger.ChangeState(EnemyStateType.Aggressive);
     }
 
     public bool CanHit(out Player player)

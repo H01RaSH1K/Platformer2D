@@ -5,7 +5,7 @@ public class Creature : MonoBehaviour
 {
     public Health Health { get; private set; }
 
-    private void Awake()
+    protected virtual void Awake()
     {
         Health = GetComponent<Health>();
     }
