@@ -7,14 +7,15 @@ public class InputService : MonoBehaviour
 
     public event Action<float> HorizontalAxisChanged;
     public event Action JumpButtonPressed;
+    public event Action VamppirismButtonPressed;
 
     private void Update()
     {
-        HandlerHorizontalAxisInput();
-        HandleJumpInput();
+        HandleHorizontalAxisInput();
+        HandleButtonsInput();
     }
 
-    private void HandlerHorizontalAxisInput()
+    private void HandleHorizontalAxisInput()
     {
         float horizontalAxis = Input.GetAxisRaw(InputAxis.Horizontal);
 
@@ -25,9 +26,12 @@ public class InputService : MonoBehaviour
         }
     }
 
-    private void HandleJumpInput()
+    private void HandleButtonsInput()
     {
         if (Input.GetButtonDown(InputButtons.Jump))
             JumpButtonPressed?.Invoke();
+
+        if (Input.GetButtonDown(InputButtons.Vampirism))
+            VamppirismButtonPressed?.Invoke();
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 public class StateAttack : EnemyState
 {
     private float _attackingTime = 1f;
-    private int _damage = 10;
+    private int _damage = 70;
     private MonoBehaviour _coroutineRunner;
     private Transform _transform;
     private Walker _walker;
