@@ -70,13 +70,14 @@ public class Vampirism : MonoBehaviour
         {
             yield return _waitForTick;
 
-            foreach (Enemy enemy in GetEnemiesInRadius())
-            {
-                _health.TakeHeal(Math.Min(_damagePerTick, enemy.Health.Count));
-                enemy.Health.TakeDamage(_damagePerTick);
-            }
-
             SetCharge(Math.Max(0, Charge - _chargeConsumptionPerTick));
+            Enemy enemy = GetClosestEnemyInRadius();
+
+            if (enemy == null)
+                continue;
+
+            _health.TakeHeal(Math.Min(_damagePerTick, enemy.Health.Count));
+            enemy.Health.TakeDamage(_damagePerTick);
         }
 
         DisableVampirism();
@@ -92,17 +93,26 @@ public class Vampirism : MonoBehaviour
         }
     }
 
-    private List<Enemy> GetEnemiesInRadius()
+    private Enemy GetClosestEnemyInRadius()
     {
-        var results = new List<Enemy>();
+        Enemy closestEnemy = null;
+        float distanceToClosestEnemySquared = float.MaxValue;
 
         foreach (Collider2D collider in Physics2D.OverlapCircleAll(transform.position, _radius))
         {
-            if (collider.TryGetComponent(out Enemy enemy))
-                results.Add(enemy);
+            if (collider.TryGetComponent(out Enemy enemy) == false)
+                continue;
+
+            float distanceSquared = (enemy.transform.position - transform.position).sqrMagnitude;
+
+            if (distanceSquared < distanceToClosestEnemySquared)
+            {
+                closestEnemy = enemy;
+                distanceToClosestEnemySquared = distanceSquared;
+            }
         }
 
-        return results;
+        return closestEnemy;
     }
 
     private void SetCharge(int charge)
